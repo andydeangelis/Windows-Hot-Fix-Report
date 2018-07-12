@@ -158,7 +158,7 @@ $deadServers | Out-File -FilePath $failedConnections
 foreach ($server in $aliveServers)
 {
 	$svrWorksheet = "$server"
-	$svrTable = "$server"
+	$svrTable = "T" + $server
 
 	if ($server -eq $env:COMPUTERNAME)
 	{
