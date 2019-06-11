@@ -1,3 +1,5 @@
+# https://www.leeholmes.com/blog/2015/01/05/extracting-tables-from-powershells-invoke-webrequest/
+# tweaked from the above code
 function Get-HtmlTable {
     param(
         [Parameter(Mandatory=$true)]
@@ -9,7 +11,7 @@ function Get-HtmlTable {
     )
 
     $r = Invoke-WebRequest $url -UseDefaultCredentials: $UseDefaultCredentials
-    
+
     $table = $r.ParsedHtml.getElementsByTagName("table")[$tableIndex]
     $propertyNames=$Header
     $totalRows=@($table.rows).count
@@ -17,16 +19,16 @@ function Get-HtmlTable {
     for ($idx = $FirstDataRow; $idx -lt $totalRows; $idx++) {
 
         $row = $table.rows[$idx]
-        $cells = @($row.cells)        
+        $cells = @($row.cells)
 
         if(!$propertyNames) {
             if($cells[0].tagName -eq 'th') {
-                $propertyNames = @($cells | foreach {$_.innertext -replace ' ',''})
+                $propertyNames = @($cells | ForEach-Object {$_.innertext -replace ' ',''})
             } else  {
-                $propertyNames =  @(1..($cells.Count + 2) | % { "P$_" })
+                $propertyNames =  @(1..($cells.Count + 2) | Foreach-Object { "P$_" })
             }
             continue
-        }        
+        }
 
         $result = [ordered]@{}
 

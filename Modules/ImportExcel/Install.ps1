@@ -1,5 +1,5 @@
-<# 
-    .SYNOPSIS   
+<#
+    .SYNOPSIS
         Download the module files from GitHub.
 
     .DESCRIPTION
@@ -20,14 +20,19 @@ Begin {
         Write-Verbose "$ModuleName module installation started"
 
         $Files = @(
+            'AddConditionalFormatting.ps1',
             'Charting.ps1',
+            'ColorCompletion.ps1',
             'ConvertFromExcelData.ps1',
             'ConvertFromExcelToSQLInsert.ps1',
+            'ConvertExcelToImageFile.ps1',
             'ConvertToExcelXlsx.ps1',
             'Copy-ExcelWorkSheet.ps1',
             'EPPlus.dll',
+            'Export-charts.ps1',
             'Export-Excel.ps1',
             'Export-ExcelSheet.ps1',
+            'formatting.ps1',
             'Get-ExcelColumnName.ps1',
             'Get-ExcelSheetInfo.ps1',
             'Get-ExcelWorkbookInfo.ps1',
@@ -43,9 +48,14 @@ Begin {
             'New-ConditionalText.ps1',
             'New-ExcelChart.ps1',
             'New-PSItem.ps1',
+            'Open-ExcelPackage.ps1',
             'Pivot.ps1',
-            'Plot.ps1',
+            'plot.ps1',
+            'Send-SqlDataToExcel.ps1',
             'Set-CellStyle.ps1',
+            'Set-Column.ps1',
+            'Set-Row.ps1',
+            'SetFormat.ps1',
             'TrackingUtils.ps1',
             'Update-FirstObjectProperties.ps1'
         )
@@ -75,12 +85,12 @@ Process {
         }
 
         if (-not (Test-Path $InstallDirectory)) {
-            New-Item -Path $InstallDirectory -ItemType Directory -EA Stop | Out-Null
+            $null = New-Item -Path $InstallDirectory -ItemType Directory -EA Stop
             Write-Verbose "$ModuleName created module folder '$InstallDirectory'"
         }
 
         $WebClient = New-Object System.Net.WebClient
-        
+
         $Files | ForEach-Object {
             $WebClient.DownloadFile("$GitPath/$_","$installDirectory\$_")
             Write-Verbose "$ModuleName installed module file '$_'"
